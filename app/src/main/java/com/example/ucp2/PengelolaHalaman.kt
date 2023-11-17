@@ -17,6 +17,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.ucp2.data.SumberData.dosen
 import com.example.ucp2.data.OrderUIState
 
+
 enum class PengelolaHalaman {
     Home,
     Form,
@@ -44,6 +45,28 @@ fun FormSkripsi(
                     }
                 )
             }
+            composable (route = PengelolaHalaman.Form.name){
+                val context = LocalContext.current
+                HalamanSatu (
+                    dosen1 = dosen.map {id -> context.resources.getString(id)},
+                    dosen2 = dosen.map {id -> context.resources.getString(id)},
+                    onSelectionChanged = {viewModel.setDosen1(it)},
+                    onNextButtonClicked = {
+                        navController.navigate(PengelolaHalaman.Summary.name)
+                    },
+                )
+            }
+
+            composable(route = PengelolaHalaman.Summary.name){
+                HalamanDua(orderUiState = uiState, onCancelButtonClicked = { cancelOrderAndNavigateToForm(navController)},
+                )
+            }
         }
     }
+}
+
+private fun cancelOrderAndNavigateToForm(
+    navController: NavHostController
+){
+    navController.popBackStack(PengelolaHalaman.Form.name, inclusive = false)
 }

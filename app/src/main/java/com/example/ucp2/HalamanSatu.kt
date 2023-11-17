@@ -2,11 +2,15 @@ package com.example.ucp2
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.selection.selectable
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -24,7 +28,11 @@ import androidx.compose.ui.unit.sp
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HalamanSatu(
-    onNextButtonClicked: (MutableList<String>) -> Unit,
+    dosen1: List<String>,
+    dosen2: List<String>,
+    onSelectionChanged: (String) -> Unit,
+    onNextButtonClicked: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     var nama by rememberSaveable { mutableStateOf("") }
     var nim by rememberSaveable { mutableStateOf("") }
@@ -38,10 +46,12 @@ fun HalamanSatu(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.fillMaxSize()
-    ){
-        Text(text = stringResource(id = R.string.judul),
+    ) {
+        Text(
+            text = stringResource(id = R.string.judul),
             fontSize = 30.sp,
-            fontWeight = FontWeight.Bold)
+            fontWeight = FontWeight.Bold
+        )
         Spacer(modifier = Modifier.padding(dimensionResource(R.dimen.padding_medium)))
         OutlinedTextField(
             placeholder = { Text("Masukkan Nama") },
@@ -55,7 +65,6 @@ fun HalamanSatu(
                     )
                 )
             })
-        Spacer(modifier = Modifier.padding(dimensionResource(R.dimen.padding_small)))
         OutlinedTextField(
             placeholder = { Text("Masukkan NIM") },
             value = nim,
@@ -68,7 +77,6 @@ fun HalamanSatu(
                     )
                 )
             })
-        Spacer(modifier = Modifier.padding(dimensionResource(R.dimen.padding_small)))
         OutlinedTextField(
             placeholder = { Text("Masukkan Konsentrasi") },
             value = konsentrasi,
@@ -81,7 +89,6 @@ fun HalamanSatu(
                     )
                 )
             })
-        Spacer(modifier = Modifier.padding(dimensionResource(R.dimen.padding_small)))
         OutlinedTextField(
             placeholder = { Text("Masukkan Judul Skripsi") },
             value = skripsi,
@@ -94,5 +101,60 @@ fun HalamanSatu(
                     )
                 )
             })
+        Row() {
+            Column(
+                modifier =
+                Modifier.padding(dimensionResource(R.dimen.padding_medium))
+            ) {
+                dosen1.forEach { item ->
+                    Row(modifier = Modifier.selectable(
+                        selected = dp1 == item,
+                        onClick = {
+                            dp1 = item
+                            onSelectionChanged(item)
+                        }
+                    ),
+                        verticalAlignment = Alignment.CenterVertically) {
+                        RadioButton(selected = dp1 == item,
+                            onClick = {
+                                dp1 = item
+                                onSelectionChanged(item)
+                            }
+                        )
+                        Text(item)
+                    }
+                }
+                Column(
+                    modifier =
+                    Modifier.padding(dimensionResource(R.dimen.padding_medium))
+                ) {
+                    dosen2.forEach { item ->
+                        Row(modifier = Modifier.selectable(
+                            selected = dp2 == item,
+                            onClick = {
+                                dp2 = item
+                                onSelectionChanged(item)
+                            }
+                        ),
+                            verticalAlignment = Alignment.CenterVertically) {
+                            RadioButton(selected = dp2 == item,
+                                onClick = {
+                                    dp2 = item
+                                    onSelectionChanged(item)
+                                }
+                            )
+                            Text(item)
+                        }
+                    }
+                }
+                Button(
+                    modifier = Modifier.weight(1f),
+                    enabled = listData.isNotEmpty(),
+                    onClick = onNextButtonClicked
+                ) {
+                    Text(stringResource(id = R.string.next))
+                }
+            }
+        }
     }
 }

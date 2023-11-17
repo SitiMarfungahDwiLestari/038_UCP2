@@ -53,23 +53,7 @@ fun HalamanHome(
                     contentDescription = null,
                     contentScale = ContentScale.Crop
                 )
-                Text(
-                    text = "Es Teh",
-                    color = Color.DarkGray,
-                    fontFamily = FontFamily.Cursive,
-                    fontSize = 35.sp,
-                    modifier = Modifier
-                        .align(Alignment.CenterHorizontally)
-                )
-                Text(
-                    text = "Gembrunggung",
-                    color = Color.DarkGray,
-                    fontFamily = FontFamily.Cursive,
-                    fontStyle = FontStyle.Italic,
-                    fontSize = 60.sp,
-                    fontWeight = FontWeight.Bold
-                )
-            }
+                            }
         }
         Row(
             modifier = Modifier
